@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Python</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+      
+      <p id="currentTime">
+        def pour_water(juga, jugb):<br>
+    max1, max2, fill = 3, 4, 2<br>
+    print("%d \t%d" % (juga, jugb))<br>
+    if jugb==fill:<br>
+        return<br>
+    elif jugb==max2:<br>
+        pour_water(0,juga)<br>
+    elif juga!=0 and jugb==0:<br>
+        pour_water(0,juga)<br>
+    elif juga==fill:<br>
+        pour_water(juga,0)<br>
+    elif juga<max1: 
+        pour_water(max1, jugb)<br>
+    elif juga<(max2-jugb):<br>
+        pour_water(0,(juga+jugb))<br>
+    else:<br>
+        pour_water(juga-(max2-jugb), (max2-jugb)+jugb)<br>
+    
+    
+    
+print("Jug A \tJug B")
+pour_water(0,0)
+
+      </p>
+      <script src="script.js"></script>
+  </body>
+</html>
