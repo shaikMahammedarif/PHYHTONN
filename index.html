@@ -29,6 +29,437 @@
     
 print("Jug A \tJug B")
 pour_water(0,0)
+------------------------------------------------------
+1.Family Tree
+class FamilyTree:
+    def __init__(self):
+        self.family_tree = {}
+
+    def add_member(self, name, parent=None):
+        if name not in self.family_tree:
+            self.family_tree[name] = {'parent': parent, 'children': []}
+            if parent in self.family_tree:
+                self.family_tree[parent]['children'].append(name)
+
+    def print_family_tree(self):
+        print("Family Tree:")
+        for name, data in self.family_tree.items():
+            parent = data['parent']
+            children = data['children']
+            print(f"{name} (Parent: {parent}, Children: {', '.join(children)})")
+
+family = FamilyTree()
+
+while True:
+    print("\nFamily Tree Management Menu:")
+    print("1. Add Member")
+    print("2. Print Family Tree")
+    print("3. Exit")
+    choice = input("Enter your choice: ")
+    if choice == '1':
+        name = input("Enter the name of the family member: ")
+        parent = input("Enter the parent's name (leave blank if none): ")
+        family.add_member(name, parent)
+    elif choice == '2':
+        family.print_family_tree()
+    elif choice == '3':
+        break
+    else:
+        print("Invalid choice. Please enter a valid option.")
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+
+2.Water Jug Problem
+
+def pour_water(juga, jugb):
+    max1, max2, fill = 3, 4, 2
+    print("%d \t%d" % (juga, jugb))
+    if jugb==fill:
+        return
+    elif jugb==max2:
+        pour_water(0,juga)
+    elif juga!=0 and jugb==0:
+        pour_water(0,juga)
+    elif juga==fill:
+        pour_water(juga,0)
+    elif juga<max1:
+        pour_water(max1, jugb)
+    elif juga<(max2-jugb):
+        pour_water(0,(juga+jugb))
+    else:
+        pour_water(juga-(max2-jugb), (max2-juga)+jugb)
+    
+    
+    
+print("Jug A \tJug B")
+pour_water(0,0)
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+3.Best First Search
+
+from queue import PriorityQueue
+v=5
+graph = [[] for i in range(v)]
+
+def addedge(x, y, cost):
+    graph[x].append((y,cost))
+    graph[y].append((x,cost))
+
+def bestFirstSearch(source, target, n):
+    visited = [False]*n
+    pq = PriorityQueue()
+    pq.put((0,source))
+    visited[source] = True
+    while pq.empty()==False:
+        u = pq.get()[1]
+        print(u, end="")
+        if(u==target):
+            break
+        for v,c in graph[u]:
+            if(visited[v]==False):
+                visited[v]=True
+                pq.put((c,v))
+        print()
+
+addedge(0, 1, 4)
+addedge(0, 2, 5)
+addedge(1, 3, 2)
+addedge(2, 4, 8)
+addedge(3, 4, 6)
+source = 0
+target = 4
+bestFirstSearch(source, target, v)
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+4.Depth First search
+
+graph = {}
+visited = set()
+
+def addedge(x,y):
+    if x not in graph.keys():
+        graph[x] = [y]
+    else:
+        graph[x].append(y)
+    if y not in graph.keys():
+        graph[y] = [x]
+    else:
+        graph[y].append(x)
+
+def DFS(visited, graph, start):
+    if start not in visited:
+        print(start, end=" ")
+        visited.add(start)
+        for i in graph[start]:
+            DFS(visited, graph, i)
+
+addedge(5, 1)
+addedge(5, 3)
+addedge(1, 6)
+addedge(3, 2)
+addedge(3, 4)
+addedge(8, 0)
+addedge(1, 8)
+addedge(4, 8)
+
+DFS(visited, graph, 5)
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+5.DLS
+
+graph = {}
+visited = set()
+
+def addedge(x, y):
+    if x not in graph.keys():
+        graph[x] = [y]
+    else:
+        graph[x].append(y)
+    if y not in graph.keys():
+        graph[y] = [x]
+    else:
+        graph[y].append(x)
+
+def DLS(visited, graph, start, depth_limit):
+    if depth_limit >= 0:
+        if start not in visited:
+            print(start, end=" ")
+            visited.add(start)
+            for i in graph[start]:
+                DLS(visited, graph, i, depth_limit - 1)
+
+# Example usage
+addedge(5, 1)
+addedge(5, 3)
+addedge(1, 6)
+addedge(3, 2)
+addedge(3, 4)
+addedge(8, 0)
+addedge(1, 8)
+addedge(4, 8)
+
+depth_limit = 2
+start_node = 5
+print(f"DLS with depth limit {depth_limit}:")
+DLS(visited, graph, start_node, depth_limit)
+
+
+
+
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+
+
+6. A *
+from queue import PriorityQueue
+v = 5
+graph = [[] for _ in range(v)]
+def addedge(x, y, cost):
+    graph[x].append((y, cost))
+    graph[y].append((x, cost))
+def heuristic(node, target):
+    return abs(node - target)
+def aStarSearch(source, target, n):
+    visited = [False] * n
+    pq = PriorityQueue()
+    pq.put((0, source, heuristic(source, target)))
+    visited[source] = True
+    while not pq.empty():
+        _, u, _ = pq.get()
+       print(u, end="")
+        if u == target:
+            break
+        for v, c in graph[u]:
+            if not visited[v]:
+                visited[v] = True
+                pq.put((c, v, c + heuristic(v, target)))
+        print()
+addedge(0, 1, 4)
+addedge(0, 2, 5)
+addedge(1, 3, 2)
+addedge(2, 4, 8)
+addedge(3, 4, 6)
+source = 0
+target = 4
+aStarSearch(source, target, v)
+
+
+---------------------------------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------------------------------
+
+
+
+7.(4 Queens)
+
+
+def isSafe(mat, r, c):
+       for i in range(r):
+        if mat[i][c] == 'Q':
+            return False
+
+        (i, j) = (r, c)
+    while i >= 0 and j >= 0:
+        if mat[i][j] == 'Q':
+            return False
+        i = i - 1
+        j = j - 1
+
+       (i, j) = (r, c)
+    while i >= 0 and j < len(mat):
+        if mat[i][j] == 'Q':
+            return False
+        i = i - 1
+        j = j + 1
+    return True
+def printSolution(mat):
+    for r in mat:
+        print(str(r).replace(',', '').replace('\'', ''))
+    print()
+def nQueen(mat, r):
+       if r == len(mat):
+        printSolution(mat)
+        return
+    for i in range(len(mat)):
+               if isSafe(mat, r, i):
+                       mat[r][i] = 'Q'
+            nQueen(mat, r + 1)
+                       mat[r][i] = '–'
+
+
+if __name__ == '__main__':
+        N = int(input("N = "))
+    mat = [['–' for x in range(N)] for y in range(N)]
+    nQueen(mat, 0)
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+8.CSP
+
+def is_safe(vertex, color, graph, c):
+    for i in range(len(graph)):
+        if graph[vertex][i] and color[i] == c:
+            return False
+    return True
+
+def graph_coloring_util(graph, colors, color, v):
+    if v == len(graph):
+        return True
+
+    for c in colors:
+        if is_safe(v, color, graph, c):
+            color[v] = c
+            if graph_coloring_util(graph, colors, color, v + 1):
+                return True
+            color[v] = None
+
+    return False
+
+def graph_coloring(graph, colors):
+    color = [None] * len(graph)
+
+    if not graph_coloring_util(graph, colors, color, 0):
+        print("Solution does not exist.")
+        return
+
+    print("Solution:")
+    for v in range(len(graph)):
+        print(f"Vertex {v + 1} is assigned color {color[v]}")
+if __name__ == "__main__":
+    num_vertices = int(input("Enter the number of vertices: "))
+    print("Enter the adjacency matrix:")
+    graph = []
+    for _ in range(num_vertices):
+        row = list(map(int, input().split()))
+        graph.append(row)
+    colors = input("Enter the colors (e.g., red green blue): ").split()
+    graph_coloring(graph, colors)
+
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+9.Logical 
+
+from kanren import run, var, fact
+from kanren.assoccomm import eq_assoccomm as eq
+from kanren.assoccomm import commutative, associative
+
+addition = 'add'
+multiplication = 'mul'
+
+# Define commutativity and associativity for multiplication and addition
+fact(commutative, multiplication)
+fact(commutative, addition)
+fact(associative, multiplication)
+fact(associative, addition)
+
+# Define variables
+x, y, z = var('a'), var('b'), var('c')
+
+# Define the original pattern
+originalPattern = (multiplication, (addition, z, x), y)
+
+# Example expressions
+ex1 = (multiplication, 9, (addition, 5, 1))
+ex2 = (addition, 5, (multiplication, 8, 1))
+ex3 = (multiplication, 59, (addition, 234, 34))
+
+# Solve and print the results
+print(run(0, (x, y, z), eq(originalPattern, ex1)))
+print(run(0, (x, y, z), eq(originalPattern, ex2)))
+print(run(0, (x, y, z), eq(originalPattern, ex3)))
+
+
+
+
+
+
+
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ 10th Knowledge Representation
+
+
+likes(ram,mango)
+girl(seema)
+red(rose)
+owns(john,gold)
+likes(bill,cindy)
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+Queens (2)
+def solve_nqueens(n):
+    def is_safe(board, row, col):
+        return all(board[i] != col and
+                   board[i] - i != col - row and
+                   board[i] + i != col + row
+                   for i in range(row))
+    def solve(board, row):
+        if row == n:
+            solutions.append(board[:])
+            return
+        for col in range(n):
+            if is_safe(board, row, col):
+                board[row] = col
+                solve(board, row + 1)
+    solutions = []
+    solve([None] * n, 0)
+    return solutions
+def print_solution(solution):
+    for row in solution:
+        row_str = ". " * row + "Q " + ". " * (len(solution) - row - 1)
+        print(row_str)
+    print()
+if _name_ == "_main_":
+    n = 4  
+    solutions = solve_nqueens(n)
+
+    for solution in solutions:
+        print_solution(solution)
+
+---------------------------------------
+
+
+
+
 
       </p>
       <script src="script.js"></script>
